@@ -19,7 +19,19 @@ tasks.test {
     useJUnitPlatform()
 }
 
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests are required to run before generating the report
+}
+
+tasks.jacocoTestCoverageVerification {
+    dependsOn(tasks.jacocoTestReport)
+}
+
 jacoco {
     toolVersion = "0.8.11"
-    reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
+    reportsDirectory = layout.buildDirectory.dir("reports/jacocoReport")
 }
